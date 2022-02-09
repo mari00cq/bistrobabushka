@@ -6,6 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bistro Babushka</title>
     <style>
+      img {
+        width: 100%;
+      }
+      body {
+        background-color: lightpink;
+      }
+      h1 {
+        display: flex;
+        justify-content: center;
+      }
       nav {
         display: flex;
         justify-content: center;
@@ -17,6 +27,14 @@
       section {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding-inline-start: 10%;
+        padding-inline-end: 10%;
+      }
+      article {
+        border: solid 1px black;
+        padding: 20px;
+        background-color: white;
       }
     </style>
   </head>
@@ -37,8 +55,8 @@
     <template>
       <article>
         <h2></h2>
-        <img src="" alt="" />
-        <p class="ret"></p>
+        <img src="" alt="" class="billede" />
+        <p class="navn"></p>
         <p class="pris">Pris:</p>
       </article>
     </template>
@@ -63,13 +81,15 @@
       }
 
       function vis(json) {
-        json.forEach((ret) => {
-          console.log(ret);
+        json.forEach((navn) => {
+          console.log(navn);
           const klon = template.cloneNode(true);
-          klon.querySelector("h2").textContent = ret.retter + " " + ret.pris;
+          klon.querySelector("h2").textContent = navn.navn + " " + navn.pris;
 
-          klon.querySelector(".ret").textContent = ret.email;
-          klon.querySelector("img").src = "billeder/" + ret.profilbillede;
+          klon.querySelector(".navn").textContent = navn.navn;
+          klon.querySelector(".navn").textContent = navn.pris;
+          klon.querySelector(".billede").src =
+            "medium/" + navn.billede + "_md.jpg";
 
           section.appendChild(klon);
         });
