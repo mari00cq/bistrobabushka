@@ -12,9 +12,20 @@
       body {
         background-color: lightpink;
       }
+      #overskrift {
+        display: flex;
+        justify-content: center;
+        font-size: 5rem;
+        font-family: sans-serif;
+        padding: 80px;
+      }
       h1 {
         display: flex;
         justify-content: center;
+        font-family: sans-serif;
+      }
+      h2 {
+        font-family: sans-serif;
       }
       nav {
         display: flex;
@@ -22,7 +33,7 @@
         gap: 30px;
       }
       .valgt {
-        background-color: red;
+        background-color: rgb(245, 240, 168);
       }
       section {
         display: grid;
@@ -39,15 +50,15 @@
     </style>
   </head>
   <header>
-    <h1>Bistro Babushka</h1>
+    <div id="overskrift">Bistro Babushka</div>
   </header>
 
   <nav>
-    <button class="knap valgt" data-kategori="alle">Alle</button>
-    <button class="knap" data-kategori="forretter">Forretter</button>
-    <button class="knap" data-kategori="hovedretter">Hovedretter</button>
-    <button class="knap" data-kategori="desserter">Desserter</button>
-    <button class="knap" data-kategori="drikkevarer">Drikkevarer</button>
+    <button class="filter valgt" data-kategori="alle">Alle</button>
+    <button class="filter" data-kategori="forretter">Forretter</button>
+    <button class="filter" data-kategori="hovedretter">Hovedretter</button>
+    <button class="filter" data-kategori="desserter">Desserter</button>
+    <button class="filter" data-kategori="drikkevarer">Drikkevarer</button>
   </nav>
   <h1>Alle</h1>
   <body>
@@ -62,7 +73,7 @@
     </template>
 
     <script>
-      const header = document.querySelector("header h1");
+      const header = document.querySelector("h1");
       const url = "https://babushka-dd8a.restdb.io/rest/menu";
 
       const key = "600ec2fb1346a1524ff12de4";
@@ -78,24 +89,43 @@
         const resspons = await fetch(url, options);
         const json = await resspons.json();
         vis(json);
+        addEventListenersToButtons();
       }
+
+      let kategorier;
+      let filter = "alle";
 
       function vis(json) {
         json.forEach((navn) => {
           console.log(navn);
+          if (filter == "alle" || filter == navn.kategori);
           const klon = template.cloneNode(true);
-          klon.querySelector("h2").textContent = navn.navn + " " + navn.pris;
+          klon.querySelector("h2").textContent = navn.navn;
 
           klon.querySelector(".navn").textContent = navn.navn;
           klon.querySelector(".navn").textContent = navn.pris;
-          klon.querySelector(".billede").src =
-            "medium/" + navn.billede + "_md.jpg";
+          klon.querySelector(".billede").src = "medium/" + navn.billede;
 
           section.appendChild(klon);
         });
       }
 
       hentData();
+
+      function addEventListenersToButtons() {
+        document.querySelectorAll(".filter").forEach((elm) => {
+          elm.addEventListener("click", filtrering);
+        });
+      }
+      function filtrering() {
+        filter = this.dataset.kategori;
+        document.querySelector("h1").textContent = this.textContent;
+        document.querySelectorAll(".filter").forEach((elm) => {
+          elm.classList.remove("valgt");
+        });
+        this.classList.add("valgt");
+        visJson();
+      }
 
       //dataSet.kategori;
     </script>
