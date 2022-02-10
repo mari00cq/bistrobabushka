@@ -67,7 +67,7 @@
       <article>
         <h2></h2>
         <img src="" alt="" class="billede" />
-        <p class="navn"></p>
+        <p class="beskrivelse"></p>
         <p class="pris">Pris:</p>
       </article>
     </template>
@@ -80,6 +80,8 @@
       const section = document.querySelector("section");
       const template = document.querySelector("template").content;
 
+      let retter;
+
       const options = {
         headers: {
           "x-apikey": key,
@@ -87,24 +89,24 @@
       };
       async function hentData() {
         const resspons = await fetch(url, options);
-        const json = await resspons.json();
-        vis(json);
+        retter = await resspons.json();
+        vis();
         addEventListenersToButtons();
       }
 
       let kategorier;
       let filter = "alle";
 
-      function vis(json) {
-        json.forEach((navn) => {
-          console.log(navn);
-          if (filter == "alle" || filter == navn.kategori);
+      function vis() {
+        retter.forEach((ret) => {
+          console.log(ret);
+          if (filter == "alle" || filter == ret.kategori);
           const klon = template.cloneNode(true);
-          klon.querySelector("h2").textContent = navn.navn;
-
-          klon.querySelector(".navn").textContent = navn.navn;
-          klon.querySelector(".navn").textContent = navn.pris;
-          klon.querySelector(".billede").src = "medium/" + navn.billede;
+          klon.querySelector("h2").textContent = ret.navn;
+          klon.querySelector(".beskrivelse").textContent = ret.kortbeskrivelse;
+          klon.querySelector(".pris").textContent += ret.pris + ",- kr";
+          klon.querySelector("img").src =
+            "billeder/" + ret.billednavn + "-md.jpg";
 
           section.appendChild(klon);
         });
@@ -125,21 +127,6 @@
         });
         this.classList.add("valgt");
         visJson();
-      }
-
-      function visKategorier() {
-        const dest = document.querySelector();
-        const skabelon = document.querySelector("template").content;
-        dest.textContent = "";
-        katogorier.forEach((kategori) => {
-          console.log("forretter", navn.forretter);
-          if (filter == navn.forretter || filter == "alle") {
-            const klon = skabelon.cloneNode(true);
-            // klon querySelector(".navn")textContent = navn.navn;
-            klon.querySelector(".billede").src = "medium/" + navn.billede;
-            dest.appendChild(klon);
-          }
-        });
       }
 
       //dataSet.kategori;
