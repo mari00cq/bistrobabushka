@@ -115,12 +115,24 @@
             klon.querySelector("img").src =
               "billeder/" + ret.billednavn + "-md.jpg";
 
+            //lyt efter klik på retter article
+            klon
+              .querySelector("article")
+              .addEventListener("click", () => visDetaljer(ret));
+
+            //hertil
             section.appendChild(klon);
           }
         });
       }
 
       hentData();
+
+      // singleview function
+      function visDetaljer(ret) {
+        location.href = `singleview.html?id=${ret._id}`;
+      }
+      //hertil
 
       function addEventListenersToButtons() {
         document.querySelectorAll(".filter").forEach((elm) => {
