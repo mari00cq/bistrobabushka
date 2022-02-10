@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>B</title>
+    <link rel="stylesheet" href="personliste.css" />
+  </head>
+
+  <body>
+    <template>
+      <article>
+        <img src="" alt="" class="billede" />
+        <h2 class="navn"></h2>
+        <p class="titel"></p>
+        <p class="fødselsdag"></p>
+      </article>
+    </template>
+    <h1>Alle</h1>
+    <nav>
+      <button data-kategori="alle">Alle</button>
+      <button data-kategori="ja">Forretter</button>
+      <button data-kategori="nej">Hovedretter</button>
+      <button data-kategori="tvivler">Desserter</button>
+      <button data-kategori="tvivler">Drikkevarer</button>
+    </nav>
+    <main class="liste-grid"></main>
+
+    <script>
+      const url = ""https://babushka-dd8a.restdb.io/rest/menu"";
+      const key = "600ec2fb1346a1524ff12de4";
+      let personer;
+      let filter = "alle";
+      const filterknapper = document.querySelectorAll("button");
+
+      document.addEventListener("DOMContentLoaded", start);
+
+      function start() {
+        filterknapper.forEach((knap) => {
+          knap.addEventListener("click", setFilter);
+        });
+        hentData();
+      }
+
+      function setFilter() {
+        filter = this.dataset.kategori;
+        document.querySelector("h1").textContent = this.textContent;
+        vis();
+      }
+
+      async function hentData() {
+        const resspons = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-apikey": key,
+          },
+        });
+        personer = await resspons.json();
+        console.log(personer);
+        vis();
+      }
+
+      const main = document.querySelector("main");
+      const template = document.querySelector("template").content;
+
+      function vis() {
+        console.log(personer);
+        main.innerHTML = "";
+        personer.forEach((person) => {
+          if (filter == person.kategori || filter == "alle") {
+            const klon = template.cloneNode(true);
+            klon.querySelector(".billede").src = "faces/" + person.billede;
+            klon.querySelector(".navn").textContent =
+              person.fornavn + " " + person.efternavn;
+            klon.querySelector(".titel").textContent = person.titel;
+            klon.querySelector(".fødselsdag").textContent = person.fødselsdag;
+            klon.querySelector("article").addEventListener("click", () => {
+              location.href = `detalje.html?id=${person._id}`;
+            });
+
+            main.appendChild(klon);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

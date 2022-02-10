@@ -30,7 +30,7 @@
       nav {
         display: flex;
         justify-content: center;
-        gap: 30px;
+        gap: 10px;
       }
       .valgt {
         background-color: rgb(245, 240, 168);
@@ -125,6 +125,21 @@
         });
         this.classList.add("valgt");
         visJson();
+      }
+
+      function visKategorier() {
+        const dest = document.querySelector();
+        const skabelon = document.querySelector("template").content;
+        dest.textContent = "";
+        katogorier.forEach((kategori) => {
+          console.log("forretter", navn.forretter);
+          if (filter == navn.forretter || filter == "alle") {
+            const klon = skabelon.cloneNode(true);
+            // klon querySelector(".navn")textContent = navn.navn;
+            klon.querySelector(".billede").src = "medium/" + navn.billede;
+            dest.appendChild(klon);
+          }
+        });
       }
 
       //dataSet.kategori;
