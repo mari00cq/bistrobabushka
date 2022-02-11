@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      img {
+        max-width: 100%;
+        grid-column: 2/3;
+      }
+
+      p,
+      h2 {
+        padding: 2%;
+      }
+
+      body {
+        /* background-color: whitesmoke; */
+        background-color: #ffffff;
+        background-color: #fefefe;
+        background-image: url("data:image/svg+xml,%3Csvg width='12' height='16' viewBox='0 0 12 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 .99C4 .445 4.444 0 5 0c.552 0 1 .45 1 .99v4.02C6 5.555 5.556 6 5 6c-.552 0-1-.45-1-.99V.99zm6 8c0-.546.444-.99 1-.99.552 0 1 .45 1 .99v4.02c0 .546-.444.99-1 .99-.552 0-1-.45-1-.99V8.99z' fill='%2329235c' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E");
+      }
+
+      @media screen and (min-width: 750px) {
+        article {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+
+        p {
+          max-width: 80%;
+        }
+      }
+
+      article {
+        color: #29235c;
+        background-color: white;
+        border: solid 1px;
+        border-color: #29235c;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      section button {
+        place-content: center end;
+      }
+
+      section {
+        grid-column: 1/2;
+        grid-row: 1/2;
+      }
+
+      button {
+        display: flex;
+        justify-content: center;
+        background-color: #2c4b9b;
+        color: whitesmoke;
+        border-radius: 5px;
+        text-align: right;
+        border: none;
+        padding: 2%;
+        margin: 4px;
+      }
+
+      button:hover {
+        background-color: #5269a3;
+      }
+
+      a {
+        color: rgb(245, 238, 230);
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <article class="grid">
+      <img src="" alt="" />
+
+      <section>
+        <h2></h2>
+        <p class="kort"></p>
+        <p class="pris">Pris:</p>
+        <button><a href="index.html">Tilbage</a></button>
+      </section>
+    </article>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id");
+
+      const medieurl = "https://babushka-dd8a.restdb.io/rest/menu";
+      let madret;
+      const options = {
+        "x-apikey": "600ec2fb1346a1524ff12de4",
+      };
+
+      // console.log("ID", id);
+      document.addEventListener("DOMContentLoaded", loadJson);
+
+      async function loadJson() {
+        const jsonData = await fetch(
+          `https://babushka-dd8a.restdb.io/rest/menu/${id}`,
+          {
+            headers: options,
+          }
+        );
+        madret = await jsonData.json();
+
+        // console.log("Madretter", madret);
+        visMadret(madret);
+      }
+
+      function visMadret() {
+        document.querySelector("h2").textContent = madret.navn;
+        // console.log(madret.navn);
+        document.querySelector(".kort").textContent = madret.langbeskrivelse;
+        document.querySelector("img").src =
+          "billeder/" + madret.billednavn + "-md.jpg";
+        document.querySelector(".pris").textContent = madret.pris + " kr";
+      }
+    </script>
+  </body>
+</html>

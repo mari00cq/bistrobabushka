@@ -22,7 +22,7 @@
 
     <script>
       const urlParams = new URLSearchParams(window.location.search);
-      const id = urlParams.get("id");
+      const _id = urlParams.get("id");
 
       //her kommer det fra index
 
@@ -34,27 +34,30 @@
       const myHeaders = {
         "x-apikey": key,
       };
-      console.log("id", id);
-
+      // console.log("id", id);
+      loadJSON();
       async function loadJSON() {
         const JSONData = await fetch(
           `"https://babushka-dd8a.restdb.io/rest/menu"${_id}`,
           { headers: myHeaders }
         );
         retter = await JSONData.json();
-        console.log("retter", ret._id);
+        console.log("retter", _id);
         vis();
       }
-      function visRet() {
+      function vis() {
+        // console.log(ret._id);
         document.querySelector(".navn").textContent = ret._id;
         document.querySelector("img").src =
           "billeder/" + ret.billednavn + "-md.jpg";
-        document.querySelector(".button").addEventListener("click", tilbage);
+
+        document.querySelector("button").addEventListener("click", tilbage);
       }
 
       function tilbage() {
         history.back();
       }
+
       //her slutter det fra index
 
       let ret;
@@ -64,6 +67,78 @@
       //   headers: myHeaders
 
       // });
+
+      // const header = document.querySelector("h1");
+      // const url = "https://babushka-dd8a.restdb.io/rest/menu";
+
+      // const key = "600ec2fb1346a1524ff12de4";
+      // const section = document.querySelector("section");
+      // const template = document.querySelector("template").content;
+
+      // let retter;
+
+      // const options = {
+      //   headers: {
+      //     "x-apikey": key,
+      //   },
+      // };
+      // async function hentData() {
+      //   const resspons = await fetch(url, options);
+      //   retter = await resspons.json();
+      //   console.log(retter);
+      //   vis();
+      //   addEventListenersToButtons();
+      // }
+
+      // let kategori;
+      // let filter = "alle";
+
+      // function vis() {
+      //   console.log(filter);
+      //   section.textContent = " ";
+      //   retter.forEach((ret) => {
+      //     if (filter == "alle" || filter == ret.kategori) {
+      //       const klon = template.cloneNode(true);
+      //       klon.querySelector("h2").textContent = ret.navn;
+      //       klon.querySelector(".beskrivelse").textContent =
+      //         ret.kortbeskrivelse;
+      //       klon.querySelector(".pris").textContent += ret.pris + ",- kr";
+      //       klon.querySelector("img").src =
+      //         "billeder/" + ret.billednavn + "-md.jpg";
+
+      //       //lyt efter klik på retter article
+      //       klon
+      //         .querySelector("article")
+      //         .addEventListener("click", () => visDetaljer(ret));
+
+      //       //hertil
+      //       section.appendChild(klon);
+      //     }
+      //   });
+      // }
+
+      // hentData();
+
+      // // singleview function
+      // function visDetaljer(ret) {
+      //   location.href = `singleview.html?id=${ret._id}`;
+      // }
+      // //hertil
+
+      // function addEventListenersToButtons() {
+      //   document.querySelectorAll(".filter").forEach((elm) => {
+      //     elm.addEventListener("click", filtrering);
+      //   });
+      // }
+      // function filtrering() {
+      //   filter = this.dataset.kategori;
+      //   document.querySelector("h1").textContent = this.textContent;
+      //   document.querySelectorAll(".filter").forEach((elm) => {
+      //     elm.classList.remove("valgt");
+      //   });
+      //   this.classList.add("valgt");
+      //   vis();
+      // }
     </script>
   </body>
 </html>
